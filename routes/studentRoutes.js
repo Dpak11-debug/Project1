@@ -10,9 +10,8 @@ router.get("/students",controller.getStudents);
 
 router.put("/students/:studentId/:courseId?", controller.updateStudentAndCourse);
 
+router.delete("/students/:studentId", controller.softDelete);
 
-router.delete("/students/:id", controller.softDeleteStudent);
-
-router.delete("/students/:studentId/courses/:courseId", controller.softDeleteCourse);
+router.delete("/students/:studentId/courses/:courseId", controller.softDelete);
 
 module.exports = router;

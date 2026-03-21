@@ -19,7 +19,7 @@ exports.createStudent = async (req,res) => {
     }
 }
 
-// lay off
+
 
 exports.getStudents = async (req, res) => {
   try {
@@ -141,11 +141,11 @@ exports.softDeleteStudent = async (req, res) => {
 };
 
 
-exports.softDeleteCourse = async (req, res) => {
+exports.softDelete = async (req, res) => {
   try {
-    const { studentId, courseId } = req.params;
+    const { studentId, courseId, id } = req.params;
 
-    const student = await Student.findById(studentId);
+    const student = await Student.findById(studentId || id);
 
     if (!student) {
       return res.status(404).json({
@@ -154,23 +154,35 @@ exports.softDeleteCourse = async (req, res) => {
       });
     }
 
-    const course = student.courses.id(courseId);
+    if (courseId) {
+      const course = student.courses.id(courseId);
 
-    if (!course) {
-      return res.status(404).json({
-        success: false,
-        message: "Course not found"
+      if (!course) {
+        return res.status(404).json({
+          success: false,
+          message: "Course not found"
+        });
+      }
+
+      course.isDeleted = true;
+      await student.save();
+
+      return res.status(200).json({
+        success: true,
+        message: "Course soft deleted",
+        data: student
       });
     }
 
-    course.isDeleted = true; // mark course as deleted
+    student.isDeleted = true;
     await student.save();
 
     res.status(200).json({
       success: true,
-      message: "Course soft deleted",
+      message: "Student soft deleted",
       data: student
     });
+
   } catch (err) {
     res.status(400).json({
       success: false,
