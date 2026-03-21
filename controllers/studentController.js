@@ -105,40 +105,6 @@ exports.updateStudentAndCourse = async (req, res) => {
   }
 };
 
-// Soft Delete a student
-exports.softDeleteStudent = async (req, res) => {
-  try {
-    const id = req.params.id;
-
-    // 1️⃣ Find student
-    const student = await Student.findById(id);
-
-    // 2️⃣ Check if student exists
-    if (!student) {
-      return res.status(404).json({
-        success: false,
-        message: "Student not found"
-      });
-    }
-
-    // 3️⃣ Soft delete
-    student.isDeleted = true;
-    await student.save();
-
-    // 4️⃣ Response
-    res.status(200).json({
-      success: true,
-      message: "Student soft deleted",
-      data: student
-    });
-
-  } catch (err) {
-    res.status(400).json({
-      success: false,
-      message: err.message
-    });
-  }
-};
 
 
 exports.softDelete = async (req, res) => {
