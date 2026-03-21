@@ -2,9 +2,6 @@
 const {request} = require("express");
 const Student = require("../models/studentModel");
 
-
-
-
 exports.createStudent = async (req,res) => {
     try {
         const records = req.body.records ;
@@ -22,7 +19,7 @@ exports.createStudent = async (req,res) => {
     }
 }
 
-
+// lay off
 
 exports.getStudents = async (req, res) => {
   try {
