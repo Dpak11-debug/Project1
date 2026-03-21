@@ -2,7 +2,6 @@
 
 const {request} = require("express");
 const Student = require("../models/studentModel");
-//test git
 
 exports.createStudent = async (req,res) => {
     try {
