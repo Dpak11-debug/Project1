@@ -1,4 +1,6 @@
 
+// like a diamond
+
 
 const {request} = require("express");
 const Student = require("../models/studentModel");
