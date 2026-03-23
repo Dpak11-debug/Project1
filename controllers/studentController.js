@@ -111,6 +111,7 @@ exports.softDelete = async (req, res) => {
   try {
     const { studentId, courseId, id } = req.params;
 
+    // 👉 find student
     const student = await Student.findById(studentId || id);
 
     if (!student) {
@@ -120,6 +121,15 @@ exports.softDelete = async (req, res) => {
       });
     }
 
+    // 👉 check if student already deleted
+    if (student.isDeleted) {
+      return res.status(409).json({
+        success: false,
+        message: "Student already deleted"
+      });
+    }
+
+    // 👉 if courseId exists → delete course
     if (courseId) {
       const course = student.courses.id(courseId);
 
@@ -130,6 +140,15 @@ exports.softDelete = async (req, res) => {
         });
       }
 
+      // 👉 check if course already deleted
+      if (course.isDeleted) {
+        return res.status(409).json({
+          success: false,
+          message: "Course already deleted"
+        });
+      }
+
+      // 👉 soft delete course
       course.isDeleted = true;
       await student.save();
 
@@ -140,17 +159,18 @@ exports.softDelete = async (req, res) => {
       });
     }
 
+    // 👉 soft delete student
     student.isDeleted = true;
     await student.save();
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message: "Student soft deleted",
       data: student
     });
 
   } catch (err) {
-    res.status(400).json({
+    return res.status(500).json({
       success: false,
       message: err.message
     });
