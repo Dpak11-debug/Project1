@@ -1,22 +1,21 @@
 
-const {request} = require("express");
-const Student = require("../models/studentModel");
+const Student = require ("../models/studentModel");
 
-exports.createStudent = async (req,res) => {
-    try {
-        const records = req.body.records ;
-        const students = await Student.insertMany(records);
-        res.status(201).json({
-            success : true,
-            count : students.length,
-            data : students
-        });
-    }catch(err){
-        res.status(400).json({
-            success: false,
-            message : err.message
-        })
-    }
+exports.createStudent= async (req,res) => {
+  try{
+    const records = req.body.params;
+    const students = await Student.insertMany(records);
+    res.status(201).json({
+      success:true,
+      count: students.length,
+      data : students
+    })
+  }catch(err){
+    res.status(400).json({
+      success :false,
+      message:err.message
+    })
+  }
 }
 
 
