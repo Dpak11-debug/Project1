@@ -43,6 +43,8 @@ exports.getStudents = async (req, res) => {
   }
 };
 
+
+
 exports.updateStudentAndCourse = async (req, res) => {
   try {
     const { studentId, courseId } = req.params;
